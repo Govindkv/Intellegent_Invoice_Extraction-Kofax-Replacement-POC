@@ -1,0 +1,16 @@
+numpy
+matplotlib
+opencv-python
+pdf2image
+python-doctr[torch]  # or pip install python-doctr[tensorflow] (for TensorFlow)
+fastapi ## Validation_requirements
+uvicorn
+easyocr
+pillow
+python-multipart
+# paddleocr
+pdfplumber
+pyodbc
+nltk
+camelot-py[cv]
+scikit-learn

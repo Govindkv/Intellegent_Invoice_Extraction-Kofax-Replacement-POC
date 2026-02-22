@@ -1,0 +1,14 @@
+{
+  "vendor_name": "INTEGRIA HEALTHCARE (AUSTRALIA) PTY LIMITED",
+  "store_name": "CWH Glen Waverley",
+  "store_id": "B086",
+  "bill_to_store_name": "CW Management Pty Ltd",
+  "bill_to_store_id": "B655",
+  "invoice_number": "CN-006991",
+  "date": "05/10/2022",
+  "Total_Items": 160.89,
+  "Freight": 0.0,
+  "Final_Amount": 176.98,
+  "GST": 10.0,
+  "type": "Credit adjustment note"
+}

@@ -1,0 +1,154 @@
+<!-- <html>
+<head>
+  <title>Draw and Save</title>
+  <style>
+    canvas { border:1px solid #ccc; cursor:crosshair; }
+  </style>
+</head>
+<body>
+<h2>Draw box & enter field</h2>
+<canvas id="c"></canvas><br>
+<input id="fieldName" placeholder="Field Name"/>
+<button onclick="sendData()">Save</button>
+
+<script>
+let img = new Image();
+img.src = '/image/{{ filename }}';
+
+let canvas = document.getElementById('c');
+let ctx = canvas.getContext('2d');
+let rect = {};
+
+img.onload = () => {
+  canvas.width = img.width;
+  canvas.height = img.height;
+  ctx.drawImage(img, 0, 0);
+};
+
+let drawing = false;
+let sx, sy;
+
+canvas.addEventListener('mousedown', e => {
+  drawing = true;
+  sx = e.offsetX;
+  sy = e.offsetY;
+});
+
+canvas.addEventListener('mousemove', e => {
+  if (drawing) {
+    ctx.drawImage(img, 0, 0);
+    let w = e.offsetX - sx;
+    let h = e.offsetY - sy;
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(sx, sy, w, h);
+    rect = { x: sx, y: sy, width: w, height: h };
+  }
+});
+
+canvas.addEventListener('mouseup', () => {
+  drawing = false;
+});
+
+function sendData() {
+  let f = document.getElementById('fieldName').value;
+  fetch('/learn/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ field_name: f, coords: rect })
+  })
+  .then(res => res.json())
+  .then(res => alert('Saved: ' + res.field_name));
+}
+</script>
+
+</body>
+</html> -->
+
+<html>
+<head>
+  <title>Manual Field Trainer</title>
+  <style>
+    canvas { border: 1px solid #ccc; cursor: crosshair; display: block; margin-bottom: 10px; }
+    input, button { margin: 5px; padding: 5px; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+<h2>Draw box & Save Field Mapping</h2>
+
+<canvas id="c"></canvas>
+
+<!-- Input Fields -->
+<input id="vendorName" placeholder="Vendor Name" />
+<input id="templateId" placeholder="Template ID" />
+<input id="fieldName" placeholder="Field Name" />
+<button onclick="sendData()">Save</button>
+
+<script>
+let img = new Image();
+img.src = '/image/{{ filename }}';
+
+let canvas = document.getElementById('c');
+let ctx = canvas.getContext('2d');
+let rect = {};
+
+img.onload = () => {
+  canvas.width = img.width;
+  canvas.height = img.height;
+  ctx.drawImage(img, 0, 0);
+};
+
+let drawing = false;
+let sx, sy;
+
+canvas.addEventListener('mousedown', e => {
+  drawing = true;
+  sx = e.offsetX;
+  sy = e.offsetY;
+});
+
+canvas.addEventListener('mousemove', e => {
+  if (drawing) {
+    ctx.drawImage(img, 0, 0);
+    let w = e.offsetX - sx;
+    let h = e.offsetY - sy;
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(sx, sy, w, h);
+    rect = { x: sx, y: sy, width: w, height: h };
+  }
+});
+
+canvas.addEventListener('mouseup', () => {
+  drawing = false;
+});
+
+function sendData() {
+  let vendor = document.getElementById('vendorName').value.trim();
+  let template = document.getElementById('templateId').value.trim();
+  let field = document.getElementById('fieldName').value.trim();
+
+  if (!vendor || !template || !field) {
+    alert("Please fill Vendor Name, Template ID, and Field Name.");
+    return;
+  }
+
+  fetch('/learn/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      vendor_name: vendor,
+      template_id: template,
+      field_name: field,
+      coords: rect
+    })
+  })
+  .then(res => res.json())
+  .then(res => alert('✅ Saved: ' + res.field_name + ' under ' + res.vendor_name + ' / ' + res.template_id))
+  .catch(err => alert('❌ Error saving data: ' + err));
+}
+</script>
+
+</body>
+</html>
